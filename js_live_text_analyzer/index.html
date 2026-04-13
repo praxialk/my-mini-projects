@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Text Analyzer</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9fafb;
+            color: #1f2937;
+            padding: 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 1rem;
+            font-size: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        textarea:focus {
+            border-color: #6366f1;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .stat-box text {
+            display: block;
+        }
+        .stat-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4f46e5;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Live Text Analyzer</h1>
+    <textarea id="textInput" placeholder="Start typing here..."></textarea>
+    
+    <div class="stats">
+        <div class="stat-box">
+            <span class="stat-label">Characters</span>
+            <span class="stat-value" id="charCount">0</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-label">Words</span>
+            <span class="stat-value" id="wordCount">0</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-label">Read Time (Mins)</span>
+            <span class="stat-value" id="readTime">0</span>
+        </div>
+    </div>
+
+    <script>
+        const textInput = document.getElementById('textInput');
+        const charCountEl = document.getElementById('charCount');
+        const wordCountEl = document.getElementById('wordCount');
+        const readTimeEl = document.getElementById('readTime');
+
+        textInput.addEventListener('input', () => {
+            const text = textInput.value;
+            
+            // Character count (including spaces)
+            charCountEl.textContent = text.length;
+            
+            // Word count (split by spaces, filter out empty strings)
+            const words = text.split(/\s+/).filter(word => word.length > 0);
+            const wordCount = words.length;
+            wordCountEl.textContent = wordCount;
+            
+            // Average reading time (assuming 200 words per minute)
+            const minutes = Math.ceil(wordCount / 200);
+            readTimeEl.textContent = wordCount === 0 ? 0 : (minutes === 0 ? "< 1" : minutes);
+        });
+    </script>
+</body>
+</html>
